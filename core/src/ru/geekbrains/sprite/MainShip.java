@@ -23,7 +23,7 @@ public class MainShip extends Ship {
     public MainShip(TextureAtlas atlas, BulletPool bulletPool, ExplosionPool explosionPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         this.v = new Vector2();
-        this.v0 = new Vector2(0.5f, 0);
+        this.v0 = new Vector2(0.8f, 0);
         this.bulletPool = bulletPool;
         this.explosionPool = explosionPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
@@ -31,7 +31,7 @@ public class MainShip extends Ship {
         this.bulletPos = new Vector2();
         this.bulletHeight = 0.01f;
         this.damage = 1;
-        this.reloadInterval = 0.2f;
+        this.reloadInterval = 0.35f;
         this.hp = HP;
         this.shootSound = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
     }
@@ -117,7 +117,9 @@ public class MainShip extends Ship {
                 moveRight();
                 break;
             case Input.Keys.UP:
-                shoot();
+
+                doubleRightShoot();
+                doubleLeftShoot();
         }
     }
 

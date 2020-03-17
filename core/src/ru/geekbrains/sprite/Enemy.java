@@ -34,6 +34,10 @@ public class Enemy extends Ship {
         } else {
             this.reloadTimer = reloadInterval*0.9f;
         }
+        if (  (getRight() >= worldBounds.getRight()-halfWidth*2 ) || (getLeft() <= worldBounds.getLeft()+halfWidth*2)) {
+            v0.x=-v.x;
+            v.set(v0);
+        }
         if (getBottom() < worldBounds.getBottom()) {
             destroy();
         }

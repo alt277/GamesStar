@@ -94,6 +94,21 @@ public class Ship extends Sprite {
         Bullet bullet = bulletPool.obtain();
         bullet.set(this, bulletRegion, bulletPos, bulletV, bulletHeight, worldBounds, damage);
     }
+    protected void doubleRightShoot() {
+        shootSound.play();
+        Bullet bullet = bulletPool.obtain();
+        bulletPos.x+=halfHeight/2;
+        bulletPos.y-=halfHeight/1.5;
+
+        bullet.set(this, bulletRegion, bulletPos, bulletV, bulletHeight, worldBounds, damage);
+    }
+    protected void doubleLeftShoot() {
+        shootSound.play();
+        Bullet bullet = bulletPool.obtain();
+        bulletPos.x-=halfHeight;
+        bullet.set(this, bulletRegion, bulletPos, bulletV, bulletHeight, worldBounds, damage);
+    }
+
 
     protected void boom() {
         Explosion explosion = explosionPool.obtain();

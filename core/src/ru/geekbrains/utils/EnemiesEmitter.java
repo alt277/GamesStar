@@ -18,12 +18,15 @@ public class EnemiesEmitter {
     private static final float ENEMY_SMALL_RELOAD_INTERVAL = 3f;
     private static final int ENEMY_SMALL_HP = 1;
 
+    private static final float ENEMY_SMALL_RELOAD_INTERVAL2 = 0.3f;
+    private static final float ENEMY_MEDIUM_RELOAD_INTERVAL2 = 0.35f;
+
     private static final float ENEMY_MEDIUM_HEIGHT = 0.15f;
     private static final float ENEMY_MEDIUM_BULLET_HEIGHT = 0.02f;
     private static final float ENEMY_MEDIUM_BULLET_VY = -0.3f;
     private static final int ENEMY_MEDIUM_DAMAGE = 5;
-    private static final float ENEMY_MEDIUM_RELOAD_INTERVAL = 4f;
-    private static final int ENEMY_MEDIUM_HP = 5;
+    private static final float ENEMY_MEDIUM_RELOAD_INTERVAL = 2f;
+    private static final int ENEMY_MEDIUM_HP = 2;
 
     private static final float ENEMY_BIG_HEIGHT = 0.2f;
     private static final float ENEMY_BIG_BULLET_HEIGHT = 0.04f;
@@ -42,7 +45,10 @@ public class EnemiesEmitter {
     private final TextureRegion[] enemyBigRegions;
 
     private final Vector2 enemySmallV = new Vector2(0f, -0.2f);
-    private final Vector2 enemyMediumV = new Vector2(0f, -0.03f);
+    private final Vector2 enemySmallV2 = new Vector2(-0.5f, -0.05f);
+
+    private final Vector2 enemyMediumV = new Vector2(0f, -0.02f);
+    private final Vector2 enemyMediumV2 = new Vector2( (float) Math.random(), -0.04f);
     private final Vector2 enemyBigV = new Vector2(0f, -0.005f);
 
     private TextureRegion bulletRegion;
@@ -55,9 +61,14 @@ public class EnemiesEmitter {
         this.enemyPool = enemyPool;
         this.worldBounds = worldBounds;
         this.enemySmallRegions = Regions.split(atlas.findRegion("enemy0"), 1, 2, 2);
+        //      this.enemySmallRegions2 = Regions.split(atlas.findRegion("enemy0"), 1, 2, 2);
+
         this.enemyMediumRegions = Regions.split(atlas.findRegion("enemy1"), 1, 2, 2);
+        //       this.enemyMediumRegions2 = Regions.split(atlas.findRegion("enemy1"), 1, 2, 2);
+
         this.enemyBigRegions = Regions.split(atlas.findRegion("enemy2"), 1, 2, 2);
         this.bulletRegion = atlas.findRegion("bulletEnemy");
+
     }
 
     public void generate(float delta, int frags) {
@@ -67,7 +78,7 @@ public class EnemiesEmitter {
             generateTimer = 0f;
             Enemy enemy = enemyPool.obtain();
             float type = (float) Math.random();
-            if (type < 0.5f) {
+            if (type < 0.1f) {
                 enemy.set(
                         enemySmallRegions,
                         enemySmallV,
@@ -79,7 +90,32 @@ public class EnemiesEmitter {
                         ENEMY_SMALL_HEIGHT,
                         ENEMY_SMALL_HP * level
                 );
-            } else if (type < 0.8) {
+            } else  if (type < 0.3f) {
+                enemy.set(
+                        enemySmallRegions,
+                        enemySmallV2,
+                        bulletRegion,
+                        ENEMY_SMALL_BULLET_HEIGHT,
+                        ENEMY_SMALL_BULLET_VY,
+                        ENEMY_SMALL_DAMAGE * level,
+                        ENEMY_SMALL_RELOAD_INTERVAL2,
+                        ENEMY_SMALL_HEIGHT,
+                        ENEMY_SMALL_HP * level
+                );
+            } else if (type < 0.6) {
+                enemy.set(
+                        enemyMediumRegions,
+                        enemyMediumV2,
+                        bulletRegion,
+                        ENEMY_MEDIUM_BULLET_HEIGHT,
+                        ENEMY_MEDIUM_BULLET_VY,
+                        ENEMY_MEDIUM_DAMAGE * level,
+                        ENEMY_MEDIUM_RELOAD_INTERVAL2,
+                        ENEMY_MEDIUM_HEIGHT,
+                        ENEMY_MEDIUM_HP * level
+                );
+            }
+            else if(type < 0.8) {
                 enemy.set(
                         enemyMediumRegions,
                         enemyMediumV,
@@ -91,7 +127,8 @@ public class EnemiesEmitter {
                         ENEMY_MEDIUM_HEIGHT,
                         ENEMY_MEDIUM_HP * level
                 );
-            } else {
+            }
+            else  {
                 enemy.set(
                         enemyBigRegions,
                         enemyBigV,
@@ -104,6 +141,7 @@ public class EnemiesEmitter {
                         ENEMY_BIG_HP * level
                 );
             }
+
             enemy.setBottom(worldBounds.getTop());
             enemy.pos.x = Rnd.nextFloat(worldBounds.getLeft() + enemy.getHalfWidth(), worldBounds.getRight() - enemy.getHalfWidth());
         }
